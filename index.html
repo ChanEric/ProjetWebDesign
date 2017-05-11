@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      #map {
+        height: 50%;
+      }
+      /*pour modifier la taille d'affichage de la map*/
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>  
+    <title>Netedia</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    
+    <h1 class="text-center bg-primary" onclick="document.location.reload(false)">NETEDIA </h1>
+    <p class="text-center">We are aiming to localize you, wherever you are</p>
+    <div id="map"></div>
+    <p> Latitude :</p>
+    <div id="position1"></div>
+    <p> Longitude :</p>
+    <div id="position2"></div>
+
+    <script>
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 15
+        });
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            localStorage.setItem("latitude", a = position.coords.latitude);
+            localStorage.setItem("longitude", b = position.coords.longitude);
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You are here');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+      
+
+      
+      document.getElementById("position1").innerHTML = localStorage.getItem("latitude");
+      document.getElementById("position2").innerHTML = localStorage.getItem("longitude");
+
+    </script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr8F99_0v0vbP1jI3Ei7MwSrSK8iVN38A&callback=initMap">
+    </script>
+</body>
+
+</html>
